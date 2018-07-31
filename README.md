@@ -2,6 +2,8 @@
 
 Print a map of roads on a mug.
 
+![demo](https://i.imgur.com/lXBMVxV.gif)
+
 ## Local Development
 
 Get the package and its dependencies
