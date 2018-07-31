@@ -1,0 +1,56 @@
+## This creates an AWS lambda function that uploads images to s3 bucket
+## and returns a signed url for temporary access.
+## I use it like so:
+## > aws cloudformation package --template-file ./template.yaml --s3-bucket <temporary bucket to store code> --output-template-file build/packaged-template.yam
+##
+## and then
+##
+## > aws cloudformation deploy --template-file ./build/packaged-template.yam --stack-name <your_stack_name> --capabilities CAPABILITY_IAM
+
+AWSTemplateFormatVersion : '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Creates a handler to upload temporary images to s3
+
+Outputs:
+  ApiEndpoint:
+    Description: "Stage API endpoint"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Stage/put_image"
+
+Resources:
+  PostImageAPI:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs8.10
+      CodeUri: ./handler/
+      Description: 'Put Image API POST handler'
+      Policies: 
+        - AmazonS3FullAccess
+
+      MemorySize: 128
+      Timeout: 6
+      Events:
+        PostResource:
+          Type: Api
+          Properties:
+            Path: /put_image
+            Method: POST
+
+  # # These are not needed, but might be necessary if request stops
+  # # being a simple request and needs a preflight OPTIONS
+
+  # OptionsImageAPI:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: options.handler
+  #     Runtime: nodejs8.10
+  #     CodeUri: ./handler/
+  #     Description: 'Put Image API OPTIONS handler'
+  #     MemorySize: 128
+  #     Timeout: 6
+  #     Events:
+  #       OptionsResource:
+  #         Type: Api
+  #         Properties:
+  #           Path: /put_image
+  #           Method: OPTIONS

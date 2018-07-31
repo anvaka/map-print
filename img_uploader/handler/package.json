@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "aws-lambda-multipart-parser": "^0.1.2",
+    "aws-sdk": "^2.255.1",
+    "file-type": "^8.0.0"
+  }
+}
