@@ -18,6 +18,21 @@ So every purchase supports this project.
 
 Your ideas and suggestions are more than welcomed!
 
+## How?
+
+The original map is rendered with [mapbox-gl](https://github.com/mapbox/mapbox-gl-js). When you find an 
+area that you like and click the "Start" button - I send request to the [OpenStreet Map](https://www.openstreetmap.org/)
+with [Overpass-Turbo](http://overpass-turbo.eu/) API to fetch all the roads in a given bounding box.
+
+These roads are then rendered with my own tiny-toy WebGL rendering engine [w-gl](https://github.com/anvaka/w-gl).
+The engine is not ready for production use, but it can render millions of roads very quickly. 
+
+Virtualization is a common technique used by mapping software to reduce amount of things rendered 
+on the screen and focus user's attention on major facets of a map. `w-gl` gives unique opportunity to
+see how road networks look without virtualization. I.e. every single road is rendered on the screen.
+
+Sometimes it's just a single large blob of ink, but more often you'd see [beautiful patterns](https://twitter.com/anvaka/status/1005527424757448704) on the screen.
+
 ## Local Development
 
 Get the package and its dependencies
