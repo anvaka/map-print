@@ -4,6 +4,10 @@ Print a map of roads on a mug.
 
 ![demo](https://i.imgur.com/lXBMVxV.gif)
 
+Here is how the final product look like:
+
+![Final product](https://i.imgur.com/chH2Tni.jpg)
+
 ## Why?
 
 I love maps and travels. Every time I grab a Vancouver mug - not only it is filled with hot coffee,
