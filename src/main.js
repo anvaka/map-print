@@ -1,4 +1,6 @@
-/* global mapboxgl */
+/**
+ * This is the website startup point.
+ */
 import * as osm from './lib/osm';
 import appState from './appState';
 import bus from './bus';
@@ -9,15 +11,21 @@ import mapboxgl from 'mapbox-gl';
 
 var MapboxGeocoder = require('@mapbox/mapbox-gl-geocoder');
 
+// Load vue asyncronously
 require.ensure('@/vueApp.js', () => {
-  // Settings UI is ready, initialize vue.js application
   require('@/vueApp.js');
 });
 
+// Hold a reference to mapboxgl instance.
 let map;
+// This will hold a reference to a function which cancels current download
 var cancelDownload;
 
-appState.init = function() {
+// Let the vue know what to call to start the app.
+appState.init = init;
+
+function init() {
+  // TODO: Do I need to hide this?
   mapboxgl.accessToken = 'pk.eyJ1IjoiYW52YWthIiwiYSI6ImNqaWUzZmhqYzA1OXMza213YXh2ZzdnOWcifQ.t5yext53zn1c9Ixd7Y41Dw';
   map = new mapboxgl.Map({
       container: 'map',
@@ -29,12 +37,12 @@ appState.init = function() {
 
   map.addControl(new mapboxgl.NavigationControl({showCompass: false}), 'bottom-right');
   map.addControl(new MapboxGeocoder({accessToken: mapboxgl.accessToken}));
-  
-
   map.on('zoom', updateZoomWarning);
+
   map.dragRotate.disable();
   map.touchZoomRotate.disableRotation();
 
+  // On large screens we want to warn people that they may end up downloading a lot of stuff
   updateZoomWarning();
 
   bus.on('download-all-roads', downloadRoads);
@@ -44,7 +52,6 @@ appState.init = function() {
 };
 
 // document.body.addEventListener('touchmove', (event) => event.stopPropagation());
-
 function updateZoomWarning() {
   appState.showZoomWarning = map.getZoom() < 9.7;
 }
@@ -54,6 +61,7 @@ function downloadRoads() {
   const sw = bounds.getSouthWest();
   const ne = bounds.getNorthEast()
   const boundingBox = `${sw.lat},${sw.lng},${ne.lat},${ne.lng}`;
+
   appState.building = true;
   appState.buildingMessage = 'Sending query to OSM...'
   appState.blank = false;
