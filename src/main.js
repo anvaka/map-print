@@ -5,6 +5,9 @@ import bus from './bus';
 import constructGraph from './lib/constructGraph';
 import createBoundaryHighlighter from './lib/createBoundaryHighlighter';
 import formatNumber from './lib/formatNumber';
+import mapboxgl from 'mapbox-gl';
+
+var MapboxGeocoder = require('@mapbox/mapbox-gl-geocoder');
 
 require.ensure('@/vueApp.js', () => {
   // Settings UI is ready, initialize vue.js application
@@ -24,9 +27,10 @@ appState.init = function() {
       hash: true
   });
 
-  map.addControl(new mapboxgl.NavigationControl({
-    showCompass: false,
-  }), 'bottom-right');
+  map.addControl(new mapboxgl.NavigationControl({showCompass: false}), 'bottom-right');
+  map.addControl(new MapboxGeocoder({accessToken: mapboxgl.accessToken}));
+  
+
   map.on('zoom', updateZoomWarning);
   map.dragRotate.disable();
   map.touchZoomRotate.disableRotation();

@@ -474,10 +474,13 @@ a {
   #app {
     width: 100%;
   }
+  .mapboxgl-ctrl-geocoder {
+    display: none;
+  }
 
-.title {
-  font-size: 16px;
-}
+  .title {
+    font-size: 16px;
+  }
   .about-line {
     display: flex;
     flex-direction: row;
