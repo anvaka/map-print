@@ -51,7 +51,6 @@ function init() {
   });
 };
 
-// document.body.addEventListener('touchmove', (event) => event.stopPropagation());
 function updateZoomWarning() {
   appState.showZoomWarning = map.getZoom() < 9.7;
 }
@@ -70,10 +69,7 @@ function downloadRoads() {
   const scriptKind = appState.possibleScripts.selected;
   const downloadPromise = osm.getRoadsInBoundingBox(scriptKind, boundingBox, updateDownloadProgress);
 
-  renderAfterResolution(downloadPromise, el => {
-    return el.lon >= sw.lng && el.lon <= ne.lng &&
-           el.lat >= sw.lat && el.lat <= ne.lat;
-  });
+  renderAfterResolution(downloadPromise);
 }
 
 function updateDownloadProgress(p) {
@@ -87,14 +83,18 @@ function updateDownloadProgress(p) {
   }
 }
 
-function renderAfterResolution(promise, filter) {
+function renderAfterResolution(promise) {
   cancelDownload = promise.cancel;
   appState.showCancelDownload = true;
+
+  const bounds = map.getBounds();
+  const sw = bounds.getSouthWest();
+  const ne = bounds.getNorthEast()
 
   promise.then(osmResponse => {
     cancelDownload = null;
     appState.showCancelDownload = false;
-    return constructGraph(osmResponse, filter, updateConstructionProgress);
+    return constructGraph(osmResponse, filterRoadsOutOfBounds, updateConstructionProgress);
   }).then(({graph, bounds, projector}) => {
     appState.setGraph(graph, bounds, projector);
     appState.building = false;
@@ -116,6 +116,11 @@ function renderAfterResolution(promise, filter) {
       appState.error = err;
     }
   });
+
+  function filterRoadsOutOfBounds(el) {
+    return el.lon >= sw.lng && el.lon <= ne.lng &&
+            el.lat >= sw.lat && el.lat <= ne.lat;
+  }
 }
 
 function updateConstructionProgress(current, total, kind) {
