@@ -2,17 +2,18 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta property="og:title" content="Print a map with every single road onto a mug" />
+    <meta property="og:image" content="https://raw.githubusercontent.com/anvaka/map-print/master/docs/preview_large.png" />
+    <meta property="og:description" content="This website is allows you to create personalized mugs from your travels." />
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1, user-scalable=no">
-
+    <title>Map Print</title>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.47.0/mapbox-gl.css' rel='stylesheet' />
+    <link href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.css' rel='stylesheet' type='text/css' />
     <style>
       body { margin:0; padding:0; position: fixed; overflow: hidden; width: 100%; }
       #map { position:absolute; }
       .absolute { position: absolute; }
     </style>
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>Map Print</title>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.47.0/mapbox-gl.css' rel='stylesheet' />
-    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.css' type='text/css' />
   </head>
   <body>
     <div id='app'></div>
