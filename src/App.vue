@@ -172,6 +172,7 @@ export default {
     previewOrOpen() {
       if (this.zazzleLink) {
         window.open(this.zazzleLink, '_blank');
+        recordOpenClick(this.zazzleLink);
         return;
       }
 
@@ -186,6 +187,7 @@ export default {
           scene.cleanAfterExport();
           appState.zazzleLink = link;
           window.open(link, '_blank');
+          recordOpenClick(link);
           appState.generatingPreview = false;
         }).catch(e => {
           scene.cleanAfterExport();
@@ -268,6 +270,16 @@ function getRoadsCanvas() {
 
 function get2dCanvas() {
   return document.querySelector('.ctx2d');
+}
+
+function recordOpenClick(link) {
+  if (typeof ga === 'undefined') return;
+
+  ga('send', 'event', {
+      eventCategory: 'Outbound Link',
+      eventAction: 'click',
+      eventLabel: link
+    });
 }
 </script>
 

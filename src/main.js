@@ -72,29 +72,16 @@ function downloadRoads() {
   renderAfterResolution(downloadPromise);
 }
 
-function updateDownloadProgress(p) {
-  let loaded = formatNumber(p.loaded);
-
-  if (p.lengthComputable) {
-    let total = formatNumber(p.total);
-    appState.buildingMessage = `Downloading data: ${p.percent * 100}% (${loaded} of ${total} bytes)`;
-  } else {
-    appState.buildingMessage = `Downloading data: ${loaded} bytes so far...`;
-  }
-}
-
-function renderAfterResolution(promise) {
-  cancelDownload = promise.cancel;
+function renderAfterResolution(downloadPromise) {
+  // Since promises do not support cancellation, we have to invent our own.
+  // when cancelDownload is set we can cancel the download...
+  cancelDownload = downloadPromise.cancel;
   appState.showCancelDownload = true;
 
-  const bounds = map.getBounds();
-  const sw = bounds.getSouthWest();
-  const ne = bounds.getNorthEast()
-
-  promise.then(osmResponse => {
+  downloadPromise.then(osmResponse => {
     cancelDownload = null;
     appState.showCancelDownload = false;
-    return constructGraph(osmResponse, filterRoadsOutOfBounds, updateConstructionProgress);
+    return constructGraph(osmResponse, makeFilterInsideBoundingBox(), updateConstructionProgress);
   }).then(({graph, bounds, projector}) => {
     appState.setGraph(graph, bounds, projector);
     appState.building = false;
@@ -116,12 +103,34 @@ function renderAfterResolution(promise) {
       appState.error = err;
     }
   });
+}
+
+function makeFilterInsideBoundingBox() {
+  // Some elements in the OSM response can be outside of the visible box
+  // ignore them.
+  const bounds = map.getBounds();
+  const sw = bounds.getSouthWest();
+  const ne = bounds.getNorthEast()
+
+  return filterRoadsOutOfBounds;
 
   function filterRoadsOutOfBounds(el) {
     return el.lon >= sw.lng && el.lon <= ne.lng &&
             el.lat >= sw.lat && el.lat <= ne.lat;
   }
 }
+
+function updateDownloadProgress(p) {
+  let loaded = formatNumber(p.loaded);
+
+  if (p.lengthComputable) {
+    let total = formatNumber(p.total);
+    appState.buildingMessage = `Downloading data: ${p.percent * 100}% (${loaded} of ${total} bytes)`;
+  } else {
+    appState.buildingMessage = `Downloading data: ${loaded} bytes so far...`;
+  }
+}
+
 
 function updateConstructionProgress(current, total, kind) {
   let totalStr = formatNumber(total);
