@@ -5,7 +5,6 @@ import * as osm from './lib/osm';
 import appState from './appState';
 import bus from './bus';
 import constructGraph from './lib/constructGraph';
-import createBoundaryHighlighter from './lib/createBoundaryHighlighter';
 import formatNumber from './lib/formatNumber';
 import mapboxgl from 'mapbox-gl';
 
