@@ -1,4 +1,4 @@
-let wgl = require('w-gl');
+let wgl = require("w-gl");
 
 export default class CanvasLayer extends wgl.Element {
   constructor(ctx) {
@@ -7,10 +7,10 @@ export default class CanvasLayer extends wgl.Element {
   }
 
   draw() {
-    const {ctx} = this;
+    const { ctx } = this;
 
     // TODO: read dimensions from `this`?
-    const {canvas} = ctx;
+    const { canvas } = ctx;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     ctx.save();
@@ -19,9 +19,9 @@ export default class CanvasLayer extends wgl.Element {
 
     let pixelRatio = this.scene.getPixelRatio();
 
-    let scale = transform.scale/pixelRatio;
-    let dx = transform.dx/pixelRatio;
-    let dy = transform.dy/pixelRatio;
+    let scale = transform.scale / pixelRatio;
+    let dx = transform.dx / pixelRatio;
+    let dy = transform.dy / pixelRatio;
     ctx.transform(scale, 0, 0, scale, dx, dy);
 
     for (var i = 0; i < this.children.length; ++i) {
