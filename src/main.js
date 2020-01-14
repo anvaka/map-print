@@ -24,8 +24,9 @@ var cancelDownload;
 appState.init = init;
 
 function init() {
-  // TODO: Do I need to hide this?
-  mapboxgl.accessToken = 'pk.eyJ1IjoiYW52YWthIiwiYSI6ImNqaWUzZmhqYzA1OXMza213YXh2ZzdnOWcifQ.t5yext53zn1c9Ixd7Y41Dw';
+  // Please don't use this token. It is bound to my domain and wouldn't work
+  // when you deploy to your website.
+  mapboxgl.accessToken = 'pk.eyJ1IjoiYW52YWthIiwiYSI6ImNrNWRqcDdnNTF4MHYzbXAzNDJzODludnYifQ.2WDAbuAzUuchNtCAcZitAw';
   map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/streets-v9',
