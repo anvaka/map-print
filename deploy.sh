@@ -5,4 +5,4 @@ cd ./dist
 git init
 git add .
 git commit -m 'push to gh-pages'
-git push --force git@github.com:anvaka/map-print.git master:gh-pages
+git push --force git@github.com:anvaka/map-print.git main:gh-pages
