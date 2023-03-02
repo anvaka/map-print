@@ -12,7 +12,7 @@
   "dependencies": {
     "@mapbox/mapbox-gl-geocoder": "^2.3.0",
     "d3-geo": "^1.10.0",
-    "mapbox-gl": "^1.6.0",
+    "mapbox-gl": "^1.13.3",
     "ngraph.events": "0.0.4",
     "ngraph.graph": "0.0.14",
     "rafor": "^1.0.2",
